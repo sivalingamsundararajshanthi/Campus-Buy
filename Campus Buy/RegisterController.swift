@@ -19,7 +19,11 @@ class RegisterController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var fNameLabel: UITextField!
     @IBOutlet weak var lNameLabel: UITextField!
     @IBOutlet weak var emailLabel: UITextField!
+    
+    
     @IBOutlet weak var addressLabel: UITextField!
+    
+    
     @IBOutlet weak var phoneLabel: UITextField!
     @IBOutlet weak var passwordLabel: UITextField!
     
@@ -42,12 +46,6 @@ class RegisterController: UIViewController, UITextFieldDelegate {
                             .setValue(["fName" : self.fNameLabel.text,"lName" : self.lNameLabel.text,"email" : user?.user.email,
                                        "address" : self.addressLabel.text, "phoneNumber" : self.phoneLabel.text])
                         
-                        User.customer = Customer(fName: self.fNameLabel.text!, lName: self.lNameLabel.text!, email: (user?.user.email)!, address: self.addressLabel.text!, phoneNumber: Int64(self.phoneLabel.text!)!, orderHistory : nil)
-
-//                        User.customer = Customer(fName: "siva", lName: "lingam", email: "okay@gmail.com", address: "Chicago", phoneNumber: 8159098971, orderHistory : nil)
-
-                        User.num = 1
-                        
                         self.showWelcomeView()
                     }
                 })
@@ -55,6 +53,10 @@ class RegisterController: UIViewController, UITextFieldDelegate {
                 print("Please enter a valid email address")
             }
         }
+    }
+    
+    @IBAction func cancelButton(_ sender: UIBarButtonItem) {
+        self.dismiss(animated: true, completion: nil)
     }
     
     @objc func showWelcomeView(){
@@ -71,24 +73,61 @@ class RegisterController: UIViewController, UITextFieldDelegate {
         lNameLabel.delegate = self
         emailLabel.delegate = self
         passwordLabel.delegate = self
-        passwordLabel.delegate = self
+        addressLabel.delegate = self
         phoneLabel.delegate = self
+        
+        //Making the password text field as secure
+        passwordLabel.isSecureTextEntry = true
         
         //Initialize the firebase reference
         ref = Database.database().reference()
+        
+        //Add notofications to know when the keyboard will show, will hide and will change frame
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        
+        //Add a tap gesture to dismiss the keyboard when the user taps anywhere on the screen
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyBoard))
+        view.addGestureRecognizer(tap)
     }
     
+    //Deinitializing the notifications for will show, will hide and will change frame
+    deinit{
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+    }
+    
+    //objective c function to hide the keyboard
+    @objc func dismissKeyBoard(){
+        print("dismisskeyboard")
+        view.endEditing(true)
+    }
+    
+    //This is used to navigate to the next text field and dismiss the keyboard when the last textfield is reached
     func textFieldShouldReturn(_ textField: UITextField) -> Bool
     {
         // Try to find next responder
         if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
+            print(textField.tag)
             nextField.becomeFirstResponder()
+            if(nextField.tag == 4){
+                nextField.returnKeyType = .done
+            }
         } else {
             // Not found, so remove keyboard.
+            print("else")
             textField.resignFirstResponder()
         }
         // Do not add a line break
         return false
+    }
+    
+    //This function is used to hide the keyboard
+    func hideKeyBoard(){
+        print("hidekey board")
+        passwordLabel.resignFirstResponder()
     }
     
     /**
@@ -100,6 +139,21 @@ class RegisterController: UIViewController, UITextFieldDelegate {
         
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         return emailTest.evaluate(with: testStr)
+    }
+    
+    //This is used to move the view to the top when the keyboard appears and also to bring back the view to the original place
+    @objc func keyboardWillChange(notification: Notification){
+        
+        guard let keyBoardRect = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+            return
+        }
+        
+        if notification.name == UIResponder.keyboardWillShowNotification ||
+            notification.name == UIResponder.keyboardWillChangeFrameNotification {
+            view.frame.origin.y = -keyBoardRect.height + 50
+        } else {
+            view.frame.origin.y = 0
+        }
     }
     
 
@@ -114,3 +168,54 @@ class RegisterController: UIViewController, UITextFieldDelegate {
     */
 
 }
+
+/*func registerForKeyboardNotifications(){
+    //Adding notifies on keyboard appearing
+    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: NSNotification.Name.UIResponder.keyboardWillShowNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(notification:)), name: NSNotification.Name.UIResponder.keyboardWillHideNotification, object: nil)
+}
+
+func deregisterFromKeyboardNotifications(){
+    //Removing notifies on keyboard appearing
+    NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIResponder.keyboardWillShowNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIResponder.keyboardWillHideNotification, object: nil)
+}
+
+@objc func keyboardWasShown(notification: NSNotification){
+    //Need to calculate keyboard exact size due to Apple suggestions
+    self.scrollView.isScrollEnabled = true
+    var info = notification.userInfo!
+    let keyboardSize = (info[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
+    let contentInsets : UIEdgeInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardSize!.height, right: 0.0)
+    
+    self.scrollView.contentInset = contentInsets
+    self.scrollView.scrollIndicatorInsets = contentInsets
+    
+    var aRect : CGRect = self.view.frame
+    aRect.size.height -= keyboardSize!.height
+    if let activeField = self.activeField {
+        if (!aRect.contains(activeField.frame.origin)){
+            self.scrollView.scrollRectToVisible(activeField.frame, animated: true)
+        }
+    }
+}
+
+@objc func keyboardWillBeHidden(notification: NSNotification){
+    //Once keyboard disappears, restore original positions
+    var info = notification.userInfo!
+    let keyboardSize = (info[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
+    let contentInsets : UIEdgeInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: -keyboardSize!.height, right: 0.0)
+    self.scrollView.contentInset = contentInsets
+    self.scrollView.scrollIndicatorInsets = contentInsets
+    self.view.endEditing(true)
+    self.scrollView.isScrollEnabled = false
+}
+
+func textFieldDidBeginEditing(_ textField: UITextField){
+    activeField = textField
+}
+
+func textFieldDidEndEditing(_ textField: UITextField){
+    activeField = nil
+}
+*/

@@ -57,14 +57,10 @@ class LoginController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        
-        //MAke a tap gesture for the register label, set the number of taps to 1
         
         //Make email and password textfield delegate of itself
         emailLabel.delegate = self
@@ -100,6 +96,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
         tapGesture.numberOfTapsRequired = 1
         registerLabel.addGestureRecognizer(tapGesture)
         
+        //Tap gesture for forgot password
         let tapGesture1 = UITapGestureRecognizer.init(target: self, action: #selector(forgotPassword))
         tapGesture1.numberOfTapsRequired = 1
         forgotPasswordLabel.addGestureRecognizer(tapGesture1)
@@ -187,7 +184,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
     //This objective function is used to navigate to the register controller
     @objc func registerClick(){
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let newViewController = storyBoard.instantiateViewController(withIdentifier: "registercontroller") as! RegisterController
+        let newViewController = storyBoard.instantiateViewController(withIdentifier: "REGISTERNAV") as! UINavigationController
         self.present(newViewController, animated: true, completion: nil)
     }
     

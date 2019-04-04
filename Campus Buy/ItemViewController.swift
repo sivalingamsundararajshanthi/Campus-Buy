@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ItemViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
@@ -55,17 +56,84 @@ class ItemViewController: UIViewController, UIPickerViewDataSource, UIPickerView
     //Write Core Data logic here
     @IBAction func cartButton(_ sender: Any) {
         
+        //Calculate the price of the items added
+        if(numberOfItem == nil){
+            numberOfItem = 1
+        }
+        
         let totalPrice = self.item.price * Double(numberOfItem)
         
-        let currentItem = Item(item: self.item, quantity: numberOfItem, price: totalPrice)
+        //Get Appdelegate object
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         
-        var cItems : [Item] = [Item]()
-        cItems.append(currentItem)
+        //Request for fetching ItemDb objects from DB
+        let request : NSFetchRequest<ItemDb> = ItemDb.fetchRequest()
         
-        let currentOrder = Order(items: cItems, total: 106.00)
+        //Predicate for the query
+        let predicate = NSPredicate(format: "name MATCHES %@", item.name)
         
-        User.customer?.orderHistory?.append(currentOrder)
+        //Assigning the predicate to the request
+        request.predicate = predicate
+        
+        //Array to store the return values
+        var itemArray : [ItemDb]?
+        
+        
+        do {
+            //Try to fetch the values
+            itemArray = try context.fetch(request)
+        } catch {
+            //Error in getting items
+            print("error fetching data \(error)")
+        }
+        
+        //If the itemArray is empty
+        if(itemArray?.count == 0){
+            
+            //Create a new dbItem
+            let dbItem = ItemDb(context: context)
+            
+            //Set up properties
+            dbItem.name = self.item.name
+            dbItem.quantity = Int16(numberOfItem)
+            dbItem.price = totalPrice
+            dbItem.url = item.picURL
+            
+            
+            do{
+                //Save the object on to Core Data
+                try context.save()
+                print("Success")
+            } catch {
+                print("Error adding item to cart \(error)")
+            }
+        }
+        
+        //If the itemArray is not empty
+        else {
+            
+            //Set the new quantity
+            itemArray![0].setValue(itemArray![0].quantity + Int16(numberOfItem), forKey: "quantity")
+            
+            //Set the new price
+            itemArray![0].setValue(itemArray![0].price + (Double(numberOfItem) * item.price), forKey: "price")
+            
+            do {
+                //try to update the values
+                try context.save()
+            } catch {
+                //Failed to update
+                print("Fail to update")
+            }
+        }
     }
+    
+    @IBAction func seeCartButton(_ sender: UIBarButtonItem) {
+        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyBoard.instantiateViewController(withIdentifier: "CARTCONTROLLERVIEW") as! UINavigationController
+        self.present(controller, animated: false, completion: nil)
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,6 +141,9 @@ class ItemViewController: UIViewController, UIPickerViewDataSource, UIPickerView
         // Do any additional setup after loading the view.
         
         //Delegatig quantity picker to item view controller
+        
+        self.navigationItem.title = item.name
+        
         self.quantPicker.delegate = self
         self.quantPicker.dataSource = self
         

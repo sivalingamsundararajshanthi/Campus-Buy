@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		150D82D62251A143003AA4E9 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 150D82D42251A143003AA4E9 /* DataModel.xcdatamodeld */; };
+		150D82D82251AC19003AA4E9 /* CartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150D82D72251AC19003AA4E9 /* CartViewController.swift */; };
+		150D82DA2251BA4C003AA4E9 /* CartViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150D82D92251BA4C003AA4E9 /* CartViewCell.swift */; };
 		1534069F2249A80E00D29F46 /* ItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1534069E2249A80E00D29F46 /* ItemViewController.swift */; };
 		153406A12249CF2200D29F46 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153406A02249CF2200D29F46 /* Item.swift */; };
 		153406A32249D0E200D29F46 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153406A22249D0E200D29F46 /* User.swift */; };
@@ -34,6 +37,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		150D82D52251A143003AA4E9 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		150D82D72251AC19003AA4E9 /* CartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewController.swift; sourceTree = "<group>"; };
+		150D82D92251BA4C003AA4E9 /* CartViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewCell.swift; sourceTree = "<group>"; };
 		1534069E2249A80E00D29F46 /* ItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemViewController.swift; sourceTree = "<group>"; };
 		153406A02249CF2200D29F46 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		153406A22249D0E200D29F46 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -100,9 +106,12 @@
 				1592042E222E10A6000BBA43 /* GoogleService-Info.plist */,
 				1593D2E4223C54C3004764AD /* NIUCOVER.jpg */,
 				15F6F5DB222B62AE007650BB /* AppDelegate.swift */,
+				150D82D42251A143003AA4E9 /* DataModel.xcdatamodeld */,
 				157717832241B6F600937D40 /* Clothing.jpg */,
 				15F6F5DD222B62AE007650BB /* ViewController.swift */,
 				15F6F5DF222B62AE007650BB /* Main.storyboard */,
+				150D82D72251AC19003AA4E9 /* CartViewController.swift */,
+				150D82D92251BA4C003AA4E9 /* CartViewCell.swift */,
 				1534069E2249A80E00D29F46 /* ItemViewController.swift */,
 				1577178B2241C14F00937D40 /* InventoryViewController.swift */,
 				157717892241B89A00937D40 /* CollectionViewCell.swift */,
@@ -279,14 +288,17 @@
 				153406A32249D0E200D29F46 /* User.swift in Sources */,
 				1534E0EE223731A900D29554 /* WelcomeViewController.swift in Sources */,
 				15F6F5F2222B8A8A007650BB /* RegisterController.swift in Sources */,
+				150D82DA2251BA4C003AA4E9 /* CartViewCell.swift in Sources */,
 				1534069F2249A80E00D29F46 /* ItemViewController.swift in Sources */,
 				153406A12249CF2200D29F46 /* Item.swift in Sources */,
 				1577178E2241E26A00937D40 /* InventoryCollectionViewCell.swift in Sources */,
 				15369969222CD92900E8882A /* Customer.swift in Sources */,
 				15F6F5DE222B62AE007650BB /* ViewController.swift in Sources */,
+				150D82D62251A143003AA4E9 /* DataModel.xcdatamodeld in Sources */,
 				1536996B222CDF0200E8882A /* InventoryItem.swift in Sources */,
 				15F6F5F0222B7F74007650BB /* LoginController.swift in Sources */,
 				15F6F5DC222B62AE007650BB /* AppDelegate.swift in Sources */,
+				150D82D82251AC19003AA4E9 /* CartViewController.swift in Sources */,
 				1577178C2241C14F00937D40 /* InventoryViewController.swift in Sources */,
 				1536996D222CE04600E8882A /* Order.swift in Sources */,
 				1536996F222CE0BB00E8882A /* Category.swift in Sources */,
@@ -446,7 +458,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "edu.niu.cs.CampusBuy.Campus-Buy";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -465,7 +477,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "edu.niu.cs.CampusBuy.Campus-Buy";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -491,6 +503,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		150D82D42251A143003AA4E9 /* DataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				150D82D52251A143003AA4E9 /* DataModel.xcdatamodel */,
+			);
+			currentVersion = 150D82D52251A143003AA4E9 /* DataModel.xcdatamodel */;
+			path = DataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 15F6F5D0222B62AE007650BB /* Project object */;
 }

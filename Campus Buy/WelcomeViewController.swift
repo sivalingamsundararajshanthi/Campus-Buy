@@ -53,8 +53,6 @@ class WelcomeViewController: UIViewController, UICollectionViewDataSource, UICol
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        
-//        print(User.customer!.fName)
     }
 
     // MARK: - Navigation
@@ -70,6 +68,10 @@ class WelcomeViewController: UIViewController, UICollectionViewDataSource, UICol
             
             if(index![0][1] == 0){
                 inventoryVC?.category = "CLOTHING"
+            } else if(index![0][1] == 1){
+                inventoryVC?.category = "ELECTRONICS"
+            } else {
+                inventoryVC?.category = "STATIONARY"
             }
         }
     }
