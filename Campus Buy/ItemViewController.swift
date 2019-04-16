@@ -20,6 +20,11 @@ class ItemViewController: UIViewController, UIPickerViewDataSource, UIPickerView
     //This variable is used to store the number of quantities picked by the user
     var numberOfItem : Int!
     
+    //Get Appdelegate object
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    var quantityNum : Int16?
+    
     //Number of coulmns for the picker view
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -63,9 +68,6 @@ class ItemViewController: UIViewController, UIPickerViewDataSource, UIPickerView
         
         let totalPrice = self.item.price * Double(numberOfItem)
         
-        //Get Appdelegate object
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        
         //Request for fetching ItemDb objects from DB
         let request : NSFetchRequest<ItemDb> = ItemDb.fetchRequest()
         
@@ -77,7 +79,6 @@ class ItemViewController: UIViewController, UIPickerViewDataSource, UIPickerView
         
         //Array to store the return values
         var itemArray : [ItemDb]?
-        
         
         do {
             //Try to fetch the values
@@ -98,12 +99,35 @@ class ItemViewController: UIViewController, UIPickerViewDataSource, UIPickerView
             dbItem.quantity = Int16(numberOfItem)
             dbItem.price = totalPrice
             dbItem.url = item.picURL
+            dbItem.originalPrice = self.item.price
             
+            //Set the condition to fetch the specified value
+            let fetchRequest = NSFetchRequest<QuantityDb>(entityName: "QuantityDb")
+            fetchRequest.predicate = NSPredicate(format: "name = %@", item.name)
+            
+            do{
+                //Fetch the actual value
+                let quantities = try context.fetch(fetchRequest)
+                
+                //Check if count is 1
+                if(quantities.count == 1){
+                    for q in quantities {
+                        if(q.name == item.name){
+                            
+                            print("here")
+                            //Update the quantity
+                            let currentQuant = q.quantity - Int16(numberOfItem)
+                            q.setValue(currentQuant, forKey: "quantity")
+                        }
+                    }
+                }
+            } catch {
+                print("Error fetching results \(error)")
+            }
             
             do{
                 //Save the object on to Core Data
                 try context.save()
-                print("Success")
             } catch {
                 print("Error adding item to cart \(error)")
             }
@@ -117,6 +141,31 @@ class ItemViewController: UIViewController, UIPickerViewDataSource, UIPickerView
             
             //Set the new price
             itemArray![0].setValue(itemArray![0].price + (Double(numberOfItem) * item.price), forKey: "price")
+            
+            //Set the condition to fetch the specified value
+            let fetchRequest = NSFetchRequest<QuantityDb>(entityName: "QuantityDb")
+            fetchRequest.predicate = NSPredicate(format: "name = %@", item.name)
+            
+            do{
+                
+                //Fetch the actual value
+                let quantities = try context.fetch(fetchRequest)
+                
+                //Check if count is 1
+                if(quantities.count == 1){
+                    for q in quantities {
+                        if(q.name == item.name){
+                            
+                            print("here")
+                            //Update the quantity
+                            let currentQuant = q.quantity - Int16(numberOfItem)
+                            q.setValue(currentQuant, forKey: "quantity")
+                        }
+                    }
+                }
+            } catch {
+                print("Error fetching results \(error)")
+            }
             
             do {
                 //try to update the values
@@ -137,7 +186,7 @@ class ItemViewController: UIViewController, UIPickerViewDataSource, UIPickerView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         
         //Delegatig quantity picker to item view controller
@@ -167,10 +216,34 @@ class ItemViewController: UIViewController, UIPickerViewDataSource, UIPickerView
                 }
             }
             
-            //Set the number of values -> quantity picker
-            for i in 0..<item.quantity{
-                number.append(String(i+1))
+            //Condition to fetch the specified value from the database
+            let fetchRequest = NSFetchRequest<QuantityDb>(entityName: "QuantityDb")
+            fetchRequest.predicate = NSPredicate(format: "name = %@", item.name)
+            
+            do{
+                //Make the fetch
+                let quantities = try context.fetch(fetchRequest)
+                
+                print(quantities.count)
+                
+                //Set the number for the picker
+                for q in quantities{
+                    quantityNum = q.quantity
+                }
+            } catch {
+                print("Error fetching results \(error)")
             }
+            
+            
+            if(!(quantityNum == 0)){
+                //Set the number of values -> quantity picker
+                for i in 0..<quantityNum!{
+                    number.append(String(i+1))
+                }
+            } else {
+                self.quantPicker.isUserInteractionEnabled = false
+            }
+            
         }
     }
     

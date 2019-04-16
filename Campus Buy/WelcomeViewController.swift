@@ -33,6 +33,10 @@ class WelcomeViewController: UIViewController, UICollectionViewDataSource, UICol
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        print(indexPath)
+    }
+    
     @IBAction func logoutButton(_ sender: UIBarButtonItem) {
         do{
             try Auth.auth().signOut()
@@ -71,7 +75,7 @@ class WelcomeViewController: UIViewController, UICollectionViewDataSource, UICol
             } else if(index![0][1] == 1){
                 inventoryVC?.category = "ELECTRONICS"
             } else {
-                inventoryVC?.category = "STATIONARY"
+                inventoryVC?.category = "STATIONARIES"
             }
         }
     }

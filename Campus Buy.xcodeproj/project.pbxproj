@@ -18,14 +18,15 @@
 		1536996B222CDF0200E8882A /* InventoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1536996A222CDF0200E8882A /* InventoryItem.swift */; };
 		1536996D222CE04600E8882A /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1536996C222CE04600E8882A /* Order.swift */; };
 		1536996F222CE0BB00E8882A /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1536996E222CE0BB00E8882A /* Category.swift */; };
+		156FAD6D22601A5F008EDCB3 /* TestForDownload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156FAD6C22601A5F008EDCB3 /* TestForDownload.swift */; };
 		157717842241B6F600937D40 /* Clothing.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 157717832241B6F600937D40 /* Clothing.jpg */; };
 		157717862241B75F00937D40 /* Electronics.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 157717852241B75F00937D40 /* Electronics.jpg */; };
 		157717882241B79500937D40 /* stationaries.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 157717872241B79500937D40 /* stationaries.jpg */; };
 		1577178A2241B89A00937D40 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157717892241B89A00937D40 /* CollectionViewCell.swift */; };
 		1577178C2241C14F00937D40 /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1577178B2241C14F00937D40 /* InventoryViewController.swift */; };
 		1577178E2241E26A00937D40 /* InventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1577178D2241E26A00937D40 /* InventoryCollectionViewCell.swift */; };
-		1592042F222E10A6000BBA43 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1592042E222E10A6000BBA43 /* GoogleService-Info.plist */; };
 		1593D2E5223C54C3004764AD /* NIUCOVER.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1593D2E4223C54C3004764AD /* NIUCOVER.jpg */; };
+		1595A6872255C4D70087A78B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1595A6862255C4D70087A78B /* GoogleService-Info.plist */; };
 		15F6F5DC222B62AE007650BB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F6F5DB222B62AE007650BB /* AppDelegate.swift */; };
 		15F6F5DE222B62AE007650BB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F6F5DD222B62AE007650BB /* ViewController.swift */; };
 		15F6F5E1222B62AE007650BB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 15F6F5DF222B62AE007650BB /* Main.storyboard */; };
@@ -48,14 +49,16 @@
 		1536996A222CDF0200E8882A /* InventoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryItem.swift; sourceTree = "<group>"; };
 		1536996C222CE04600E8882A /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
 		1536996E222CE0BB00E8882A /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		156FAD6C22601A5F008EDCB3 /* TestForDownload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestForDownload.swift; sourceTree = "<group>"; };
 		157717832241B6F600937D40 /* Clothing.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Clothing.jpg; sourceTree = "<group>"; };
 		157717852241B75F00937D40 /* Electronics.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Electronics.jpg; sourceTree = "<group>"; };
 		157717872241B79500937D40 /* stationaries.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = stationaries.jpg; sourceTree = "<group>"; };
 		157717892241B89A00937D40 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		1577178B2241C14F00937D40 /* InventoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryViewController.swift; sourceTree = "<group>"; };
 		1577178D2241E26A00937D40 /* InventoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryCollectionViewCell.swift; sourceTree = "<group>"; };
-		1592042E222E10A6000BBA43 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1593D2E4223C54C3004764AD /* NIUCOVER.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = NIUCOVER.jpg; sourceTree = "<group>"; };
+		1595A6862255C4D70087A78B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		1595A6882255D3AC0087A78B /* DataModel v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "DataModel v2.xcdatamodel"; sourceTree = "<group>"; };
 		15F6F5D8222B62AE007650BB /* Campus Buy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Campus Buy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		15F6F5DB222B62AE007650BB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		15F6F5DD222B62AE007650BB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -103,7 +106,6 @@
 		15F6F5DA222B62AE007650BB /* Campus Buy */ = {
 			isa = PBXGroup;
 			children = (
-				1592042E222E10A6000BBA43 /* GoogleService-Info.plist */,
 				1593D2E4223C54C3004764AD /* NIUCOVER.jpg */,
 				15F6F5DB222B62AE007650BB /* AppDelegate.swift */,
 				150D82D42251A143003AA4E9 /* DataModel.xcdatamodeld */,
@@ -113,7 +115,9 @@
 				150D82D72251AC19003AA4E9 /* CartViewController.swift */,
 				150D82D92251BA4C003AA4E9 /* CartViewCell.swift */,
 				1534069E2249A80E00D29F46 /* ItemViewController.swift */,
+				1595A6862255C4D70087A78B /* GoogleService-Info.plist */,
 				1577178B2241C14F00937D40 /* InventoryViewController.swift */,
+				156FAD6C22601A5F008EDCB3 /* TestForDownload.swift */,
 				157717892241B89A00937D40 /* CollectionViewCell.swift */,
 				15369968222CD92900E8882A /* Customer.swift */,
 				15F6F5EF222B7F74007650BB /* LoginController.swift */,
@@ -212,8 +216,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				15F6F5E6222B62B0007650BB /* LaunchScreen.storyboard in Resources */,
+				1595A6872255C4D70087A78B /* GoogleService-Info.plist in Resources */,
 				157717862241B75F00937D40 /* Electronics.jpg in Resources */,
-				1592042F222E10A6000BBA43 /* GoogleService-Info.plist in Resources */,
 				15F6F5E3222B62B0007650BB /* Assets.xcassets in Resources */,
 				157717842241B6F600937D40 /* Clothing.jpg in Resources */,
 				157717882241B79500937D40 /* stationaries.jpg in Resources */,
@@ -298,6 +302,7 @@
 				1536996B222CDF0200E8882A /* InventoryItem.swift in Sources */,
 				15F6F5F0222B7F74007650BB /* LoginController.swift in Sources */,
 				15F6F5DC222B62AE007650BB /* AppDelegate.swift in Sources */,
+				156FAD6D22601A5F008EDCB3 /* TestForDownload.swift in Sources */,
 				150D82D82251AC19003AA4E9 /* CartViewController.swift in Sources */,
 				1577178C2241C14F00937D40 /* InventoryViewController.swift in Sources */,
 				1536996D222CE04600E8882A /* Order.swift in Sources */,
@@ -508,9 +513,10 @@
 		150D82D42251A143003AA4E9 /* DataModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				1595A6882255D3AC0087A78B /* DataModel v2.xcdatamodel */,
 				150D82D52251A143003AA4E9 /* DataModel.xcdatamodel */,
 			);
-			currentVersion = 150D82D52251A143003AA4E9 /* DataModel.xcdatamodel */;
+			currentVersion = 1595A6882255D3AC0087A78B /* DataModel v2.xcdatamodel */;
 			path = DataModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
