@@ -273,7 +273,7 @@
                                         <connections>
                                             <outlet property="cellImageView" destination="GSt-HX-J3l" id="s2k-hL-bQm"/>
                                             <outlet property="cellTextView" destination="v2h-db-y3R" id="nkX-T6-1Rv"/>
-                                            <segue destination="v80-xc-VKZ" kind="show" identifier="INVENTORYSEGUE" id="4XX-tX-Jrx"/>
+                                            <segue destination="v80-xc-VKZ" kind="show" identifier="INVENTORYSEGUE" id="1Xd-Tc-xT2"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -375,13 +375,14 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="uHw-jb-RV1"/>
                     </view>
+                    <navigationItem key="navigationItem" id="tGu-o3-jka"/>
                     <connections>
                         <outlet property="inventoryCol" destination="giM-jS-axb" id="1Qq-AM-OxN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DqS-6i-2aW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4570.3999999999996" y="6.6502463054187197"/>
+            <point key="canvasLocation" x="4751" y="6"/>
         </scene>
         <!--Title-->
         <scene sceneID="5qJ-9i-ayr">
@@ -438,6 +439,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="addButton" destination="PPg-4F-O2w" id="EtZ-01-2tm"/>
                         <outlet property="inventoryImage" destination="pQl-tp-iBS" id="wFq-lC-Zcb"/>
                         <outlet property="inventoryName" destination="dYt-0q-DUc" id="U8G-D4-YFe"/>
                         <outlet property="inventoryPrice" destination="YJ0-Dh-dRH" id="OUm-Of-Wev"/>
@@ -446,7 +448,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Ix-oZ-xyT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5458.3999999999996" y="5.8470764617691158"/>
+            <point key="canvasLocation" x="5607" y="6"/>
         </scene>
         <!--CART-->
         <scene sceneID="Mhm-6H-xA8">
@@ -544,7 +546,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u3u-cc-lrh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7858.3999999999996" y="-49.925037481259373"/>
+            <point key="canvasLocation" x="7708" y="6"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="1cV-aj-PAh">
@@ -580,7 +582,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WHk-zh-uJK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6916" y="-50.246305418719217"/>
+            <point key="canvasLocation" x="6756" y="6"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="KHL-Vd-1JP">

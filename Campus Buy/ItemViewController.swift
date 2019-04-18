@@ -57,6 +57,8 @@ class ItemViewController: UIViewController, UIPickerViewDataSource, UIPickerView
     //Outlet for the quantity picker view
     @IBOutlet weak var quantPicker: UIPickerView!
     
+    @IBOutlet weak var addButton: UIButton!
+    
     //Action to perform when the user selects the add to cart button.
     //Write Core Data logic here
     @IBAction func cartButton(_ sender: Any) {
@@ -100,6 +102,7 @@ class ItemViewController: UIViewController, UIPickerViewDataSource, UIPickerView
             dbItem.price = totalPrice
             dbItem.url = item.picURL
             dbItem.originalPrice = self.item.price
+            dbItem.category = self.item.category.name
             
             //Set the condition to fetch the specified value
             let fetchRequest = NSFetchRequest<QuantityDb>(entityName: "QuantityDb")
@@ -114,12 +117,16 @@ class ItemViewController: UIViewController, UIPickerViewDataSource, UIPickerView
                     for q in quantities {
                         if(q.name == item.name){
                             
-                            print("here")
                             //Update the quantity
                             let currentQuant = q.quantity - Int16(numberOfItem)
                             q.setValue(currentQuant, forKey: "quantity")
                         }
                     }
+                    
+                    addButton.addTarget(self, action: #selector(self.loadData), for: .touchUpInside)
+                    
+                    self.loadData()
+                    
                 }
             } catch {
                 print("Error fetching results \(error)")
@@ -156,7 +163,6 @@ class ItemViewController: UIViewController, UIPickerViewDataSource, UIPickerView
                     for q in quantities {
                         if(q.name == item.name){
                             
-                            print("here")
                             //Update the quantity
                             let currentQuant = q.quantity - Int16(numberOfItem)
                             q.setValue(currentQuant, forKey: "quantity")
@@ -175,6 +181,50 @@ class ItemViewController: UIViewController, UIPickerViewDataSource, UIPickerView
                 print("Fail to update")
             }
         }
+        
+        //Reload the picker view with new data
+        addButton.addTarget(self, action: #selector(self.loadData), for: .touchUpInside)
+        self.loadData()
+    }
+    
+    /*
+     This function is used to reset the data in the picker view
+     */
+    @objc func loadData(){
+        
+        print("here")
+        
+        //Condition to fetch the specified value from the database
+        let fetchRequest = NSFetchRequest<QuantityDb>(entityName: "QuantityDb")
+        fetchRequest.predicate = NSPredicate(format: "name = %@", item.name)
+        
+        do{
+            //Make the fetch
+            let quantities = try context.fetch(fetchRequest)
+            
+            //Set the number for the picker
+            for q in quantities{
+                quantityNum = q.quantity
+            }
+        } catch {
+            print("Error fetching results \(error)")
+        }
+        
+        number.removeAll()
+        
+        if(!(quantityNum == 0)){
+            
+            
+            
+            //Set the number of values -> quantity picker
+            for i in 0..<quantityNum!{
+                number.append(String(i+1))
+            }
+        } else {
+            self.quantPicker.isUserInteractionEnabled = false
+        }
+        
+        quantPicker.reloadAllComponents()
     }
     
     @IBAction func seeCartButton(_ sender: UIBarButtonItem) {
@@ -224,8 +274,6 @@ class ItemViewController: UIViewController, UIPickerViewDataSource, UIPickerView
                 //Make the fetch
                 let quantities = try context.fetch(fetchRequest)
                 
-                print(quantities.count)
-                
                 //Set the number for the picker
                 for q in quantities{
                     quantityNum = q.quantity
@@ -243,7 +291,6 @@ class ItemViewController: UIViewController, UIPickerViewDataSource, UIPickerView
             } else {
                 self.quantPicker.isUserInteractionEnabled = false
             }
-            
         }
     }
     

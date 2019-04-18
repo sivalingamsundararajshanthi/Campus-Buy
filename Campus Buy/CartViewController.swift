@@ -5,6 +5,9 @@
 //  Created by siva lingam on 3/31/19.
 //  Copyright © 2019 NIU. All rights reserved.
 //
+/*
+ Purpose: This is the cart view controller. Here items can be removed by sliding left. From this screen orders cal also be placed.
+ */
 
 import UIKit
 import CoreData
@@ -12,8 +15,10 @@ import Firebase
 
 class CartViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    //Reference to the firebase database
     var ref : DatabaseReference?
     
+    //Array of items in the order
     var items : [ItemDb]!
     
     var quantityTextField : UITextField?
@@ -21,8 +26,10 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     //Get an object of AppDelegate
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
+    //Table view for cart items
     @IBOutlet weak var cartTableView: UITableView!
     
+    //This is used to close the cart view controller
     @IBAction func doneBtn(_ sender: UIBarButtonItem) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -56,6 +63,18 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
             //Increment the price
             total = total + item.price
             ne!.childByAutoId().setValue(["name" : item.name!, "price" : item.price, "quantity" : item.quantity])
+
+            
+            self.ref?.child("PRODUCTS/" + item.category!.uppercased()).child(item.name!).child("quantity").observeSingleEvent(of: .value, with: { (DataSnapshot) in
+                if let quantity = DataSnapshot.value as? Int {
+                    print("quantity")
+                    print(quantity)
+                    if(quantity != 0){
+                        let updatedQuantity = Int16(quantity) - item.quantity
+                        self.ref?.child("PRODUCTS/" + item.category!.uppercased()).child(item.name!).updateChildValues(["quantity": updatedQuantity])
+                    }
+                }
+            })
         }
         
         //The following is used to set the total and date
@@ -78,14 +97,17 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         })
     }
     
+    //Return the number of items in the row
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
+    //Return the number of items in the items array
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
 
+    //This is used to populate the cell in the table view
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item:ItemDb = items[indexPath.row]
         
@@ -110,18 +132,47 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         return cell
     }
     
+    //This is used to delete the item from the table view
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         //UIContextualAction for the swipe delete
         let remove = UIContextualAction(style: .normal, title: "Remove") { (UIContextualAction, view, nil) in
             
-            //Delete the object from the CoreData
-            self.context.delete(self.items[indexPath[1]])
-            
-            //Remove the object from the items array
-            self.items.remove(at: indexPath[1])
+            //Get the item from the items array
+            let item : ItemDb = self.items[indexPath[1]]
             
             do{
+                
+                //Fetch request to fetch corresponding item from QuantityDb
+                let fetchRequest = NSFetchRequest<QuantityDb>(entityName: "QuantityDb")
+                
+                //Fetch request predicate to fetch the item whose name matches
+                fetchRequest.predicate = NSPredicate(format: "name = %@", item.name!)
+                
+                //try and fetch
+                let test = try self.context.fetch(fetchRequest)
+                
+                //If count is 1
+                if(test.count == 1){
+                    //If name matches
+                    if(test[0].name == item.name){
+                
+                        //Fetch the first item from the returned array
+                        let objectUpdate = test[0]
+                        
+                        //Sum the quantities
+                        let currentQuantity = item.quantity + test[0].quantity
+                        
+                        //Update the quantity
+                        objectUpdate.setValue(currentQuantity, forKey: "quantity")
+                        
+                        //Delete the object from the CoreData
+                        self.context.delete(self.items[indexPath[1]])
+                        
+                        //Remove the object from the items array
+                        self.items.remove(at: indexPath[1])
+                    }
+                }
                 
                 //Save the context
                 try self.context.save()
@@ -141,22 +192,35 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         return UISwipeActionsConfiguration(actions: [remove])
     }
     
+    /*
+     This function is used to edit the quantity of an item in the table view
+     */
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        //Alert controller for the edit quantity
         let alertController = UIAlertController(title: items[indexPath[1]].name, message: "Edit Quantity", preferredStyle: .alert)
         
+        //Add a text field to the alert controller
         alertController.addTextField(configurationHandler: quantityTextField)
         quantityTextField?.text = String(items[indexPath[1]].quantity)
         
+        //This is used to update the quantity of the item in the core data
         let updateAction = UIAlertAction(title: "Update", style: .default) { (UIAlertAction) in
             
-            
-            if((self.items[indexPath[1]].quantity != Int16((self.quantityTextField?.text)!)) && (Int16((self.quantityTextField?.text)!)! > Int16(0))){
+            //Check if quantity in the core data and text field is not equal and the value entered is greater than zero
+            if((self.items[indexPath[1]].quantity != Int16((self.quantityTextField?.text)!))
+                && (Int16((self.quantityTextField?.text)!)! > Int16(0))){
+                
+                //Get enetered quantity from the text field
                 let quantityField = Int16((self.quantityTextField?.text)!)
                 
+                //Calculate the price for the quantity entered
                 let newPrice = Double(quantityField!) * self.items[indexPath[1]].originalPrice
                 
+                //Update the quantity in the core data
                 self.items[indexPath[1]].setValue(quantityField, forKey: "quantity")
                 
+                //Update the price
                 self.items[indexPath[1]].setValue(newPrice, forKey: "price")
                 
                 do {
@@ -249,22 +313,6 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         loadFromDb()
         
         ref = Database.database().reference()
-        
-//        let date = Date()
-//        let calendar = Calendar.current
-//        let date1 = calendar.component(.day, from: date)
-//        let month = calendar.component(.month, from: date)
-//        let hour = calendar.component(.hour, from: date)
-//        let minutes = calendar.component(.minute, from: date)
-//
-//        let currentDate = Date().description(with: .current)
-//
-//        print(date)
-//        print(date1)
-//        print(month)
-//        print(hour)
-//        print(minutes)
-//        print(currentDate)
     }
     
     func loadFromDb(){

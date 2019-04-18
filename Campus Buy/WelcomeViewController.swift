@@ -33,10 +33,6 @@ class WelcomeViewController: UIViewController, UICollectionViewDataSource, UICol
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        print(indexPath)
-    }
-    
     @IBAction func logoutButton(_ sender: UIBarButtonItem) {
         do{
             try Auth.auth().signOut()

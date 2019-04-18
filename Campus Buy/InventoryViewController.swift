@@ -5,7 +5,7 @@
 //  Created by siva lingam on 3/19/19.
 //  Copyright © 2019 NIU. All rights reserved.
 /*Purpose : The purpose of this view controller is to fetch and show the details of clothing, electronics, stationaries. Additionally when the app
-            first loads up it fetches the quantity from the Firebase to CoreData.
+    first loads up it fetches the quantity from the Firebase to CoreData.
  */
 
 import UIKit
@@ -71,7 +71,7 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
 
         // Do any additional setup after loading the view.
         
-        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
+//        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         
         //Set the titile of view controller
         self.navigationItem.title = category
