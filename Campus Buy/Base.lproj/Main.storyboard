@@ -502,6 +502,15 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sG6-lN-jht">
+                                                    <rect key="frame" x="306" y="49" width="54" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" red="1" green="0.22883842099999999" blue="0.1030965703" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <state key="normal" title="EDIT">
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </state>
+                                                </button>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
@@ -509,6 +518,7 @@
                                             <outlet property="cartName" destination="Omw-nN-NMO" id="dVj-R0-u5q"/>
                                             <outlet property="cartPrice" destination="jmR-Pl-11M" id="6wC-rs-l07"/>
                                             <outlet property="cartQnt" destination="raM-8E-RnQ" id="64G-uO-iOF"/>
+                                            <outlet property="editButton" destination="sG6-lN-jht" id="zh3-8K-nNI"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -546,7 +556,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u3u-cc-lrh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7708" y="6"/>
+            <point key="canvasLocation" x="7708" y="5.8470764617691158"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="1cV-aj-PAh">

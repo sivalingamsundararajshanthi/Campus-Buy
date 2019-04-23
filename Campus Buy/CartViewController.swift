@@ -129,6 +129,10 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.cartQnt.text = String(item.quantity)
         cell.cartPrice.text = "$" + String(item.price)
         
+        
+        cell.editButton.tag = indexPath.row
+        cell.editButton.addTarget(self, action: #selector(self.editButton(_:)), for: .touchDown)
+        
         return cell
     }
     
@@ -190,6 +194,101 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         remove.backgroundColor = UIColor.red
         
         return UISwipeActionsConfiguration(actions: [remove])
+    }
+    
+    /*
+     This objective c function is used to
+     */
+    @objc func editButton(_ sender: UIButton){
+        
+        //Get the button tag
+        let buttonTag = sender.tag
+        
+        //Get the ItemDb object from the items array based on the tag
+        let item : ItemDb = items[buttonTag]
+        
+        //Alert controller for the edit quantity
+        let alertController = UIAlertController(title: item.name, message: "Edit Quantity", preferredStyle: .alert)
+        
+        //Add a text field to the alert controller
+        alertController.addTextField(configurationHandler: quantityTextField)
+        quantityTextField?.text = String(item.quantity)
+        
+        //Update action to update the quantity based on the user entry
+        let updateAction = UIAlertAction(title: "Update", style: .default) { (UIAlertAction) in
+            
+            //Check if quantity in the core data and text field is not equal and the value entered is greater than zero
+            if((item.quantity != Int16((self.quantityTextField?.text)!))
+                && (Int16((self.quantityTextField?.text)!)! > Int16(0))){
+                
+                //Get enetered quantity from the text field
+                let quantityField = Int16((self.quantityTextField?.text)!)
+                
+                let fetchRequest = NSFetchRequest<QuantityDb>(entityName: "QuantityDb")
+                fetchRequest.predicate = NSPredicate(format: "name = %@", item.name!)
+                
+                //Array to store the QuantityDb item
+                var itemInQuantityDb = [QuantityDb]()
+                
+                do{
+                    //Fetch from Core Data
+                    itemInQuantityDb = try self.context.fetch(fetchRequest)
+                } catch {
+                    
+                    //error
+                    print("error getting results \(error)")
+                }
+                
+                //If returned array count is 1
+                if(itemInQuantityDb.count == 1){
+                    //If entered number is between 0 and QuantityDb.quantity + ItemDb.quantity
+                    if((quantityField! > Int16(0)) && (quantityField! <= (itemInQuantityDb[0].quantity) + (item.quantity))){
+                        let quantity = (itemInQuantityDb[0].quantity + item.quantity) - quantityField!
+                        
+                        do{
+                            itemInQuantityDb[0].setValue(quantity, forKey: "quantity")
+                            item.setValue(quantityField!, forKey: "quantity")
+                            
+                            //Calculate the price for the quantity entered
+                            let newPrice = Double(quantityField!) * item.originalPrice
+                            
+                            //Update the price
+                            item.setValue(newPrice, forKey: "price")
+                            
+                            try self.context.save()
+                            
+                            self.cartTableView.reloadData()
+                        } catch {
+                            print("error updating \(error)")
+                        }
+                    }
+                }
+                
+                
+//                //Calculate the price for the quantity entered
+//                let newPrice = Double(quantityField!) * item.originalPrice
+//
+//                //Update the quantity in the core data
+//                item.setValue(quantityField, forKey: "quantity")
+//
+//                //Update the price
+//                item.setValue(newPrice, forKey: "price")
+                
+//                do {
+//                    try self.context.save()
+//                    self.cartTableView.reloadData()
+//                } catch {
+//                    print("error updating item \(error)")
+//                }
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alertController.addAction(updateAction)
+        alertController.addAction(cancelAction)
+        
+        self.present(alertController, animated: true)
     }
     
     /*
