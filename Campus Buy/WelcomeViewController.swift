@@ -48,6 +48,14 @@ class WelcomeViewController: UIViewController, UICollectionViewDataSource, UICol
         self.present(newViewController, animated: true, completion: nil)
     }
     
+    /*
+     This IBAction is used to open the cart.
+    */
+    @IBAction func cartButton(_ sender: Any) {
+        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyBoard.instantiateViewController(withIdentifier: "CARTCONTROLLERVIEW") as! UINavigationController
+        self.present(controller, animated: false, completion: nil)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

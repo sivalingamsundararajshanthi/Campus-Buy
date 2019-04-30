@@ -49,52 +49,52 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     //This is the IBAction for the Buy Button
     @IBAction func buyBtn(_ sender: Any) {
         
-        //Get the current user's UID
-        let UID = Auth.auth().currentUser?.uid
-
-        //Create a child subtree called as PAST ORDERS if not present else update
-        let ne = self.ref?.child("USERS/" + UID!).child("Past Orders").childByAutoId().child("ITEMS")
-
-        //Variable to store the total
-        var total = 0.0
-
-        //Fetch each item in items array and upload it to firebase using autoid
-        for item in items {
-            //Increment the price
-            total = total + item.price
-            ne!.childByAutoId().setValue(["name" : item.name!, "price" : item.price, "quantity" : item.quantity])
-
-            
-            self.ref?.child("PRODUCTS/" + item.category!.uppercased()).child(item.name!).child("quantity").observeSingleEvent(of: .value, with: { (DataSnapshot) in
-                if let quantity = DataSnapshot.value as? Int {
-                    print("quantity")
-                    print(quantity)
-                    if(quantity != 0){
-                        let updatedQuantity = Int16(quantity) - item.quantity
-                        self.ref?.child("PRODUCTS/" + item.category!.uppercased()).child(item.name!).updateChildValues(["quantity": updatedQuantity])
-                    }
-                }
-            })
-        }
-        
-        //The following is used to set the total and date
-        self.ref?.child("USERS/" + UID!).child("Past Orders").observeSingleEvent(of: .value, with: { (DataSnapshot) in
-            
-            for snap in DataSnapshot.children {
-                let userSnap = snap as! DataSnapshot
-                
-                let str = userSnap.key
-                
-                //Set the total
-                self.ref?.child("USERS/" + UID!).child("Past Orders").child(str).updateChildValues(["total" : total])
-                
-                //Get the current date details
-                let currentDate = Date().description(with: .current)
-                
-                //Set the date
-                self.ref?.child("USERS/" + UID!).child("Past Orders").child(str).updateChildValues(["date" : currentDate])
-            }
-        })
+//        //Get the current user's UID
+//        let UID = Auth.auth().currentUser?.uid
+//
+//        //Create a child subtree called as PAST ORDERS if not present else update
+//        let ne = self.ref?.child("USERS/" + UID!).child("Past Orders").childByAutoId().child("ITEMS")
+//
+//        //Variable to store the total
+//        var total = 0.0
+//
+//        //Fetch each item in items array and upload it to firebase using autoid
+//        for item in items {
+//            //Increment the price
+//            total = total + item.price
+//            ne!.childByAutoId().setValue(["name" : item.name!, "price" : item.price, "quantity" : item.quantity])
+//
+//            
+//            self.ref?.child("PRODUCTS/" + item.category!.uppercased()).child(item.name!).child("quantity").observeSingleEvent(of: .value, with: { (DataSnapshot) in
+//                if let quantity = DataSnapshot.value as? Int {
+//                    print("quantity")
+//                    print(quantity)
+//                    if(quantity != 0){
+//                        let updatedQuantity = Int16(quantity) - item.quantity
+//                        self.ref?.child("PRODUCTS/" + item.category!.uppercased()).child(item.name!).updateChildValues(["quantity": updatedQuantity])
+//                    }
+//                }
+//            })
+//        }
+//        
+//        //The following is used to set the total and date
+//        self.ref?.child("USERS/" + UID!).child("Past Orders").observeSingleEvent(of: .value, with: { (DataSnapshot) in
+//            
+//            for snap in DataSnapshot.children {
+//                let userSnap = snap as! DataSnapshot
+//                
+//                let str = userSnap.key
+//                
+//                //Set the total
+//                self.ref?.child("USERS/" + UID!).child("Past Orders").child(str).updateChildValues(["total" : total])
+//                
+//                //Get the current date details
+//                let currentDate = Date().description(with: .current)
+//                
+//                //Set the date
+//                self.ref?.child("USERS/" + UID!).child("Past Orders").child(str).updateChildValues(["date" : currentDate])
+//            }
+//        })
     }
     
     //Return the number of items in the row
@@ -159,6 +159,8 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
                 //If count is 1
                 if(test.count == 1){
                     //If name matches
+                    
+                    print("count")
                     if(test[0].name == item.name){
                 
                         //Fetch the first item from the returned array
@@ -197,7 +199,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     /*
-     This objective c function is used to
+     This objective c function is used to edit the quantity of the item
      */
     @objc func editButton(_ sender: UIButton){
         
@@ -233,6 +235,8 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
                 do{
                     //Fetch from Core Data
                     itemInQuantityDb = try self.context.fetch(fetchRequest)
+                    
+                    print(itemInQuantityDb.count)
                 } catch {
                     
                     //error
@@ -258,6 +262,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
                             try self.context.save()
                             
                             self.cartTableView.reloadData()
+                            print("reload")
                         } catch {
                             print("error updating \(error)")
                         }
@@ -293,7 +298,6 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     /*
      This function is used to edit the quantity of an item in the table view
-     */
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         //Alert controller for the edit quantity
@@ -390,6 +394,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
 //                }
 //            }
         }
+ 
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
@@ -398,6 +403,8 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         self.present(alertController, animated: true)
     }
+ 
+ */
     
     func quantityTextField(textField : UITextField){
         quantityTextField = textField
@@ -429,14 +436,20 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        
+        if(segue.identifier == "BUYNAV"){
+            let destVC = segue.destination as! BuyViewController
+            
+            destVC.items = items
+        }
     }
-    */
+    
 
 }

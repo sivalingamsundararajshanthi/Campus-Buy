@@ -65,6 +65,13 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
     
     //This is the category string
     var category : String!
+    
+    @IBAction func cartButton(_ sender: Any) {
+        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyBoard.instantiateViewController(withIdentifier: "CARTCONTROLLERVIEW") as! UINavigationController
+        self.present(controller, animated: false, completion: nil)
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
